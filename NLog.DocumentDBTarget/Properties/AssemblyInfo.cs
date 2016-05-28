@@ -1,16 +1,16 @@
-﻿using System.Reflection;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Nlog.DocumentDBTarget")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("NLog.DocumentDBTarget")]
+[assembly: AssemblyDescription("Nlog target for DocumentDB.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Nlog.DocumentDBTarget")]
-[assembly: AssemblyCopyright("Copyright ©  2016")]
+[assembly: AssemblyCompany("Goto10")]
+[assembly: AssemblyProduct("NLog.DocumentDBTarget")]
+[assembly: AssemblyCopyright("Copyright © 2016 Goto10")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
