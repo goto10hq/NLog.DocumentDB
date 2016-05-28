@@ -86,6 +86,6 @@ Default layout looks like that.
 </layout>
 ```
 
-# TODO
+# Install using Nuget Package Manager
 
-Add nuget package. _soon(tm)_
+    Install-Package Nlog.DocumentDBTarget
