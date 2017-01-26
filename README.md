@@ -25,7 +25,7 @@ Just define connection string for DocumentDB and you are ready to go.
 You can define your custom JSON document. Keep in mind you *have* to use **JsonLayout**. Otherwise logger falls back to the default layout.
 
 ```xml
-<target name="custom document" type="DocumentDB" endPoint="https://myendpoint.documents.azure.com:443" authorizationKey="s0mes3cre7StuFf==;" database="mydb" collection="mycollection"/>
+<target name="custom document" type="DocumentDB" endPoint="https://myendpoint.documents.azure.com:443" authorizationKey="s0mes3cre7StuFf==" database="mydb" collection="mycollection"/>
  <layout type="JsonLayout">
   <attribute name="time" layout="${longdate}" />
   <attribute name="timeEpoch" layout="${epoch}" />
