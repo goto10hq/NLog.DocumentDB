@@ -12,7 +12,7 @@ Just define connection string for DocumentDB and you are ready to go.
   <add assembly="NLog.DocumentDBTarget" />         
  </extensions>
  <targets>
-  <target name="sample" type="DocumentDB" endPoint="https://myendpoint.documents.azure.com:443" authorizationKey="s0mes3cre7StuFf==;" database="mydb" collection="mycollection"/>
+  <target name="sample" type="DocumentDB" endPoint="https://myendpoint.documents.azure.com:443" authorizationKey="s0mes3cre7StuFf==" database="mydb" collection="mycollection"/>
  </targets>    
  <rules>
   <logger name="*" minlevel="Trace" writeTo="sample" />
