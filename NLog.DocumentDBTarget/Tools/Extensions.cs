@@ -2,7 +2,7 @@
 
 namespace Nlog.DocumentDBTarget.Tools
 {
-    public static class Extensions
+    internal static class Extensions
     {
         /// <summary>
         /// Convert date time to epoch.

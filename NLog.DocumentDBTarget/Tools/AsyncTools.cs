@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Nlog.DocumentDBTarget.Tools
 {
-    public static class AsyncTools
+    internal static class AsyncTools
     {
         private static readonly TaskFactory _myTaskFactory = new TaskFactory(CancellationToken.None, TaskCreationOptions.None, TaskContinuationOptions.None, TaskScheduler.Default);
 
