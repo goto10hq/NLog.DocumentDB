@@ -1,6 +1,10 @@
 # NLog.DocumentDB target
 
-Extends NLog with a new target: Azure DocumentDB. Easy to use with a nice default layout.
+Extends NLog with a new target: Azure DocumentDB (CosmosDB). Easy to use with a nice default layout.
+
+# Install using Nuget Package Manager
+
+```Install-Package Nlog.DocumentDBTarget```
 
 # Basic configuration
 
@@ -85,7 +89,3 @@ Default layout looks like that.
  <!-- <attribute name="entity" layout="${entity}" /> -->
 </layout>
 ```
-
-# Install using Nuget Package Manager
-
-    Install-Package Nlog.DocumentDBTarget
