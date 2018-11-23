@@ -5,7 +5,7 @@ using Microsoft.Azure.Documents;
 namespace Nlog.DocumentDBTarget.DocumentDB
 {
     public static class Core
-    {                           
+    {
         /// <summary>
         /// Execute db action with retries.
         /// </summary>
@@ -17,7 +17,7 @@ namespace Nlog.DocumentDBTarget.DocumentDB
 
                 try
                 {
-                    return await function();
+                    return await function().ConfigureAwait(false);
                 }
                 catch (DocumentClientException de)
                 {
@@ -47,7 +47,7 @@ namespace Nlog.DocumentDBTarget.DocumentDB
                     sleepTime = de.RetryAfter;
                 }
 
-                await Task.Delay(sleepTime);
+                await Task.Delay(sleepTime).ConfigureAwait(false);
             }
         }
     }

@@ -8,11 +8,11 @@ namespace Nlog.DocumentDBTarget
 {
     [Target("DocumentDB")]
     public class DocumentDBTarget : TargetWithLayout
-    {        
-        private static Connection _connection;        
-        private static readonly object _connectionLock = new object();
-     
-        private Connection Connection
+    {
+        static Connection _connection;
+        static readonly object _connectionLock = new object();
+
+        Connection Connection
         {
             get
             {
@@ -38,7 +38,7 @@ namespace Nlog.DocumentDBTarget
         public string Application { get; set; }
 
         public string Entity { get; set; }
-        
+
         protected override void Write(LogEventInfo logEvent)
         {
             logEvent.Properties.Add("Application", Application);
@@ -53,11 +53,11 @@ namespace Nlog.DocumentDBTarget
             else
             {
                 logMessage = Layout.Render(logEvent);
-            }            
-            
-            CreateLogEntry(logMessage);            
+            }
+
+            CreateLogEntry(logMessage);
         }
-        
+
         private void CreateLogEntry(string logMessage)
         {
             Connection.CreateJson(logMessage);

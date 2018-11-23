@@ -8,10 +8,10 @@ namespace Nlog.DocumentDBTarget.DocumentDB
 {
     public class Connection
     {
-        public DocumentClient Client { get; private set; }
+        public DocumentClient Client { get; }
 
-        public string DatabaseId { get; private set; }
-        public string CollectionId { get; private set; }
+        public string DatabaseId { get; }
+        public string CollectionId { get; }
 
         /// <summary>
         /// Ctor.
@@ -30,7 +30,7 @@ namespace Nlog.DocumentDBTarget.DocumentDB
         public async Task<bool> CreateJsonAsync(string jsonString)
         {
             var document = JsonConvert.DeserializeObject(jsonString);
-            await Core.ExecuteWithRetriesAsync(() => Client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(DatabaseId, CollectionId), document));
+            await Core.ExecuteWithRetriesAsync(() => Client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(DatabaseId, CollectionId), document)).ConfigureAwait(false);
 
             return true;
         }
@@ -40,7 +40,7 @@ namespace Nlog.DocumentDBTarget.DocumentDB
         /// </summary>
         public bool CreateJson(string jsonString)
         {
-            return AsyncTools.RunSync(() => CreateJsonAsync(jsonString));            
-        }               
+            return AsyncTools.RunSync(() => CreateJsonAsync(jsonString));
+        }
     }
 }
