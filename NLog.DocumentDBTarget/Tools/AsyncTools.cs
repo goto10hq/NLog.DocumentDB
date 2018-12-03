@@ -4,16 +4,25 @@ using System.Threading.Tasks;
 
 namespace Nlog.DocumentDBTarget.Tools
 {
-    internal static class AsyncTools
+    static class AsyncTools
     {
-        private static readonly TaskFactory _myTaskFactory = new TaskFactory(CancellationToken.None, TaskCreationOptions.None, TaskContinuationOptions.None, TaskScheduler.Default);
+        static readonly Lazy<TaskFactory> _taskFactory = new Lazy<TaskFactory>(() => new TaskFactory(CancellationToken.None, TaskCreationOptions.None, TaskContinuationOptions.None, TaskScheduler.Default));
+        static TaskFactory MyTaskFactory => _taskFactory.Value;
 
         /// <summary>
         /// Run task sync.
         /// </summary>
         public static TResult RunSync<TResult>(Func<Task<TResult>> func)
         {
-            return _myTaskFactory.StartNew(func).Unwrap().GetAwaiter().GetResult();
-        }        
+            return MyTaskFactory.StartNew(func).Unwrap().GetAwaiter().GetResult();
+        }
+
+        /// <summary>
+        /// Run sync.
+        /// </summary>
+        public static void RunSync(Func<Task> func)
+        {
+            MyTaskFactory.StartNew(func).Unwrap().GetAwaiter().GetResult();
+        }
     }
 }

@@ -7,10 +7,10 @@ namespace Nlog.DocumentDBTarget.Renderes
 {
     [LayoutRenderer("epoch")]
     public class Epoch : LayoutRenderer
-    {        
+    {
         protected override void Append(StringBuilder builder, LogEventInfo logEvent)
         {
-            builder.Append(logEvent.TimeStamp.ToEpoch());            
+            builder.Append(logEvent.TimeStamp.ToEpoch());
         }
     }
 }

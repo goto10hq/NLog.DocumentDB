@@ -1,5 +1,7 @@
-﻿using Nlog.DocumentDBTarget.DocumentDB;
+﻿using System;
+using Nlog.DocumentDBTarget.DocumentDB;
 using NLog;
+using NLog.Common;
 using NLog.Config;
 using NLog.Layouts;
 using NLog.Targets;
@@ -9,19 +11,7 @@ namespace Nlog.DocumentDBTarget
     [Target("DocumentDB")]
     public class DocumentDBTarget : TargetWithLayout
     {
-        static Connection _connection;
-        static readonly object _connectionLock = new object();
-
-        Connection Connection
-        {
-            get
-            {
-                lock (_connectionLock)
-                {
-                    return _connection ?? (_connection = new Connection(EndPoint, AuthorizationKey, Database, Collection));
-                }
-            }
-        }
+        Connection _connection;
 
         [RequiredParameter]
         public string EndPoint { get; set; }
@@ -39,28 +29,52 @@ namespace Nlog.DocumentDBTarget
 
         public string Entity { get; set; }
 
-        protected override void Write(LogEventInfo logEvent)
+        protected override void InitializeTarget()
         {
-            logEvent.Properties.Add("Application", Application);
-            logEvent.Properties.Add("Entity", Entity);
+            if (string.IsNullOrWhiteSpace(EndPoint))
+                throw new NLogConfigurationException("Cannot resolve DocumentDB EndPoint. Please make sure EndPoint property is set.");
 
-            string logMessage;
+            if (string.IsNullOrWhiteSpace(AuthorizationKey))
+                throw new NLogConfigurationException("Cannot resolve DocumentDB AuthorizationKey. Please make sure AuthorizationKey property is set.");
 
-            if (!(Layout is JsonLayout))
-            {
-                logMessage = !string.IsNullOrEmpty(Entity) ? Layouts.Goto10.Layout.Render(logEvent) : Layouts.Default.Layout.Render(logEvent);
-            }
-            else
-            {
-                logMessage = Layout.Render(logEvent);
-            }
+            if (string.IsNullOrWhiteSpace(Database))
+                throw new NLogConfigurationException("Cannot resolve DocumentDB Database. Please make sure Database property is set.");
 
-            CreateLogEntry(logMessage);
+            if (string.IsNullOrWhiteSpace(Collection))
+                throw new NLogConfigurationException("Cannot resolve DocumentDB Collection. Please make sure Collection property is set.");
+
+            _connection = new Connection(EndPoint, AuthorizationKey, Database, Collection);
         }
 
-        private void CreateLogEntry(string logMessage)
+        protected override void Write(LogEventInfo logEvent)
         {
-            Connection.CreateJson(logMessage);
+            try
+            {
+                logEvent.Properties.Add("Application", Application);
+                logEvent.Properties.Add("Entity", Entity);
+
+                string logMessage;
+
+                if (!(Layout is JsonLayout))
+                {
+                    logMessage = !string.IsNullOrEmpty(Entity) ? Layouts.Goto10.Layout.Render(logEvent) : Layouts.Default.Layout.Render(logEvent);
+                }
+                else
+                {
+                    logMessage = Layout.Render(logEvent);
+                }
+
+                CreateLogEntry(logMessage);
+            }
+            catch (Exception ex)
+            {
+                InternalLogger.Error($"Error while sending log messages to DocumentDB: message=\"{ex.Message}\"");
+            }
+        }
+
+        void CreateLogEntry(string logMessage)
+        {
+            _connection.CreateJson(logMessage);
         }
     }
 }

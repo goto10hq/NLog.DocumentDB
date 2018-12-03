@@ -8,13 +8,13 @@ namespace Nlog.DocumentDBTarget.Renderes
     [LayoutRenderer("application")]
     public class Application : LayoutRenderer
     {
-        private static string GetProcessName(LogEventInfo info)
+        static string GetProcessName(LogEventInfo info)
         {
             var layout = new ProcessNameLayoutRenderer { FullName = false };
             return layout.Render(info);
         }
 
-        private static string GetSiteName(LogEventInfo info)
+        static string GetSiteName(LogEventInfo info)
         {
             var layout = new IISInstanceNameLayoutRenderer();
             return layout.Render(info);
@@ -22,7 +22,7 @@ namespace Nlog.DocumentDBTarget.Renderes
 
         protected override void Append(StringBuilder builder, LogEventInfo logEvent)
         {
-            var app = logEvent.Properties["Application"];            
+            var app = logEvent.Properties["Application"];
             string appName;
 
             if (app == null)
@@ -36,7 +36,7 @@ namespace Nlog.DocumentDBTarget.Renderes
             {
                 appName = app.ToString();
             }
-            
+
             builder.Append(appName);
         }
     }

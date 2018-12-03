@@ -1,46 +1,60 @@
 ﻿using System;
-using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 using Microsoft.Azure.Documents.Client;
 using Newtonsoft.Json;
 using Nlog.DocumentDBTarget.Tools;
 
 namespace Nlog.DocumentDBTarget.DocumentDB
 {
-    public class Connection
+    public class Connection : IDisposable
     {
-        public DocumentClient Client { get; }
-
-        public string DatabaseId { get; }
-        public string CollectionId { get; }
+        DocumentClient _client;
+        Uri _feed;
 
         /// <summary>
         /// Ctor.
         /// </summary>
         public Connection(string endpoint, string authorizationKey, string database, string collection)
         {
-            var connectionPolicy = new ConnectionPolicy { UserAgentSuffix = "NLog.DocumentDBTarget" };
-            Client = new DocumentClient(new Uri(endpoint), authorizationKey, connectionPolicy);
-            DatabaseId = database;
-            CollectionId = collection;
+            var defaultConnectionPolicy = new ConnectionPolicy
+            {
+                RetryOptions = new RetryOptions
+                {
+                    MaxRetryAttemptsOnThrottledRequests = 10,
+                    MaxRetryWaitTimeInSeconds = 60
+                }
+            };
+
+            // direct mode works only on Windows
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                defaultConnectionPolicy.ConnectionMode = ConnectionMode.Direct;
+                defaultConnectionPolicy.ConnectionProtocol = Protocol.Tcp;
+            }
+
+            _client = new DocumentClient
+                (
+                new Uri(endpoint),
+                authorizationKey,
+                defaultConnectionPolicy
+                );
+
+            _feed = UriFactory.CreateDocumentCollectionUri(database, collection);
         }
 
         /// <summary>
         /// Create document(s) as pure json.
         /// </summary>
-        public async Task<bool> CreateJsonAsync(string jsonString)
+        public void CreateJson(string jsonString)
         {
             var document = JsonConvert.DeserializeObject(jsonString);
-            await Core.ExecuteWithRetriesAsync(() => Client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(DatabaseId, CollectionId), document)).ConfigureAwait(false);
-
-            return true;
+            AsyncTools.RunSync(() => _client.CreateDocumentAsync(_feed, document));
         }
 
-        /// <summary>
-        /// Create document(s) as pure json.
-        /// </summary>
-        public bool CreateJson(string jsonString)
+        public void Dispose()
         {
-            return AsyncTools.RunSync(() => CreateJsonAsync(jsonString));
+            _client = null;
+            _feed = null;
         }
     }
 }

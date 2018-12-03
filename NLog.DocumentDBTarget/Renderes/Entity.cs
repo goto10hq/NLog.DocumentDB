@@ -6,11 +6,11 @@ namespace Nlog.DocumentDBTarget.Renderes
 {
     [LayoutRenderer("entity")]
     public class Entity : LayoutRenderer
-    {        
+    {
         protected override void Append(StringBuilder builder, LogEventInfo logEvent)
         {
-            var entity = logEvent.Properties["Entity"];            
-            
+            var entity = logEvent.Properties["Entity"];
+
             if (entity != null)
                 builder.Append(entity);
         }
