@@ -1,3 +1,5 @@
+![NLog.DocumentDB](https://raw.githubusercontent.com/goto10hq/NLog.DocumentDB/master/nlog-documentdb-icon.png)
+
 # NLog.DocumentDB target
 
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE.md)

@@ -1,6 +1,7 @@
 .vs
-ConsoleApp/**
 ConsoleApp1/**
+ConsoleApp2/**
 Nlog.DocumentDBTarget/obj
 Nlog.DocumentDBTarget/bin
 packages
+
