@@ -46,7 +46,7 @@ namespace Nlog.DocumentDBTarget.DocumentDB
         /// Create document(s) as pure json.
         /// </summary>
         public void CreateJson(string jsonString)
-        {
+        {            
             var document = JsonConvert.DeserializeObject(jsonString);
             AsyncTools.RunSync(() => _client.CreateDocumentAsync(_feed, document));
         }

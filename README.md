@@ -3,7 +3,7 @@
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE.md)
 [![Latest Version on NuGet](https://img.shields.io/nuget/v/Nlog.DocumentDBTarget.svg)](https://www.nuget.org/packages/Nlog.DocumentDBTarget/)
 [![NuGet](https://img.shields.io/nuget/dt/Nlog.DocumentDBTarget.svg)](https://www.nuget.org/packages/Nlog.DocumentDBTarget/)
-[![.NETStandard 2.0](https://img.shields.io/badge/.NET%20Framework-4.5.2-blue.svg)](https://github.com/Microsoft/dotnet/blob/master/releases/net452/README.md)
+[![.NETStandard 2.0](https://img.shields.io/badge/.NETStandard-2.0-blue.svg)](https://github.com/dotnet/standard/blob/master/docs/versions/netstandard2.0.md)
 [![Build status](https://frohikey.visualstudio.com/Goto10/_apis/build/status/NUGET/NLog.DocumentDB)](https://frohikey.visualstudio.com/Goto10/_build/latest?definitionId=5)
 
 Extends NLog with a new target: Azure DocumentDB (CosmosDB). Easy to use with a nice default layout.
